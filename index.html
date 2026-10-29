@@ -42,8 +42,8 @@
 <body>
   <main id="page"></main>
   <script type="module">
-    import { unpackReading } from './unpack.js';
-    import { CARDS } from './cards.js';
+    import { openReading } from './unpack.js';
+    import { CARDS, REPO } from './cards.js';
 
     const LABELS = { PAST: 'Past', PRESENT: 'Present', FUTURE: 'Future' };
     const page = document.getElementById('page');
@@ -54,7 +54,9 @@
       return node;
     };
 
-    const reading = await unpackReading(location.hash.slice(1));
+    page.append(el('p', 'error', 'Shuffling your cards...'));
+    const reading = await openReading(location.hash.slice(1), { repo: REPO });
+    page.replaceChildren();
     if (!reading) {
       page.append(el('p', 'error', 'This reading could not be found. Scan the QR code on your receipt again.'));
     } else {
